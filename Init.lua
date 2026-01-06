@@ -84,11 +84,6 @@ getgenv().request = function(options)
         Event.Event:Wait();
         return Response;
     end
-local hiddenui = cloneref(game:GetService("CoreGui"))
---//this method for gethui is kind of ass, but it works well enough
-getgenv().gethui = function()
-  return hiddenui
-end
 --// adding the rest of base64 aliases in lua since i cant be half assed to do such in lua c
 getgenv().crypt = {}
 crypt.base64encode = base64encode

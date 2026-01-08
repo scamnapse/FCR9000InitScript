@@ -39,9 +39,8 @@ local clonedrefs = {}
         b.Name = n
         a.Parent = nil
     end
---// free task lib and table.clone!
+--// free task lib!
 --// yes this code is retarded but it works, not very accurate but works i guess
---// table.clone is fine tho tbf
 getgenv().task = {}
 function task.defer(func, ...)
     local args = {...}
@@ -56,15 +55,6 @@ function task.spawn(func, ...)
     local args = {...}
     coroutine.resume(co, table.unpack(args))
 end
-setreadonly(table, false)
-function table.clone(original)
-    local copy = {}
-    for k, v in pairs(original) do
-        copy[k] = v
-    end
-    return copy
-end
-setreadonly(table, true)
 getgenv().isscriptable = function(object, property)
     return select(1, pcall(function()
         return object[property]

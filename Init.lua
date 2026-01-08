@@ -74,6 +74,9 @@ getgenv().request = function(options)
         Event.Event:Wait();
         return Response;
     end
+getgenv().http = {}
+http.request = request
+getgenv().http_request = request
 --// adding the rest of base64 aliases in lua since i cant be half assed to do such in lua c
 getgenv().crypt = {}
 crypt.base64encode = base64encode
@@ -134,4 +137,15 @@ getgenv().lz4decompress = function(input)
 		end
 	end
 	return output
+end
+getgenv().lz4 = {}
+lz4.compress = lz4compress
+lz4.decompress = lz4decompress
+getgenv().hookmetamethod = function(self, method, func)
+    local mt = getrawmetatable(self)
+    local old = mt[method]
+    setreadonly(mt, false)
+    mt[method] = func
+    setreadonly(mt, true)
+    return old
 end

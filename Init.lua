@@ -149,3 +149,26 @@ getgenv().hookmetamethod = function(self, method, func)
     setreadonly(mt, true)
     return old
 end
+getgenv().getinstances = function()
+	local Table = {}
+	for i, v in next, getreg() do
+		if type(v) == "table" then
+			for n, c in next, v do
+				if typeof(c) == "Instance" then
+					table.insert(Table, c)
+				end
+			end
+		end
+	end
+	return Table
+end
+
+getgenv().getnilinstances = function()
+	local Ret = {}
+	for i, v  in next, getinstances() do
+		if v.Parent == nil then
+			Ret[#Ret + 1] = v
+		end
+	end
+	return Ret
+end

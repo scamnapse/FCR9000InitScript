@@ -224,6 +224,18 @@ if scbreakpoints_on ~= nil then
 		return a[b], true
 	end
 end
+if isfile then
+	getgenv().loadfile = function(path)
+		if isfile(path) == true then
+			loadstring(readfile(path))()
+		end
+	end
+	getgenv().dofile = function(path)
+		if isfile(path) == true then
+			return loadstring(readfile(path))
+		end
+	end
+end
 local gtab = {}
 getgenv()._G = gtab
 getgenv().shared = gtab

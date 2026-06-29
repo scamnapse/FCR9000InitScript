@@ -227,7 +227,7 @@ end
 if isfile then
 	getgenv().loadfile = function(path)
 		if isfile(path) == true then
-			loadstring(readfile(path))()
+			return loadstring(readfile(path))
 		end
 	end
 	getgenv().dofile = function(path)

@@ -233,11 +233,19 @@ if isfile then
 	getgenv().dofile = loadfile
 end
 if debug.info ~= nil then
-	getgenv.iscclosure = function(func)
-		return debug.info(func, "s") == "[C]"
+	getgenv().iscclosure = function(func)
+		if debug.info(func, "s") == "[C]" then
+			return true
+		else
+			return false
+		end
 	end
 	getgenv().islclosure = function(func)
-		return not iscclosure(func)
+		if getgenv().iscclosure(func) == true then
+			return false
+		else
+			return true
+		end
 	end
 end
 local gtab = {}

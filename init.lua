@@ -1,44 +1,4 @@
 --// fully lua cache lib and cloneref, wow
-local clonedrefs = {}
-    getgenv().cloneref = function(x)
-        if not clonedrefs[x] then clonedrefs[x] = {} end
-        local o = newproxy(true)
-        getmetatable(o).__type = "Instance"
-        getmetatable(o).__index = function(self, k, v) local e = x[k] if type(e) == "function" then return function(...) return e(x, ...) end end return e end
-        getmetatable(o).__newindex = function(self, k, v) x[k] = v end
-        getmetatable(o).__call = function(self, k, ...) return x[k](x, ...) end
-        getmetatable(o).__tostring = function(self) return x.Name end
-        getmetatable(o).__len = function(self) return error('attempt to get length of a userdata value') end
-        getmetatable(o).__metatable = "The metatable is locked"
-        table.insert(clonedrefs[x], o)
-        return o
-    end
-    getgenv().compareinstances = function(a, b)
-        if not clonedrefs[a] then
-            return a == b
-        else
-            if table.find(clonedrefs[a], b) then return true end
-        end
-        return false
-    end
-    getgenv().cache = {}
-    cache.iscached = function(thing)
-        if cache[thing] == 'REMOVE' then return false end
-        return typeof(thing) == "Instance"
-    end
-    cache.invalidate = function(thing)
-        cache[thing] = 'REMOVE'
-        thing.Parent = nil
-    end
-    cache.replace = function(a, b)
-        if cache[a] then
-            cache[a] = b
-        end
-        local n, p = a.Name, a.Parent -- name, parent
-        b.Parent = p
-        b.Name = n
-        a.Parent = nil
-    end
 --// free task lib!
 --// yes this code is retarded but it works, not very accurate but works i guess
 getgenv().task = {}
@@ -254,9 +214,15 @@ end
 getgenv().getrenv = function()
 	return RBX_Env
 end
-getgenv().rnet = {}
-rnet.shutdown = function()
-  print("no")
+if scbreakpoints_on ~= nil then
+	getgenv().sethiddenproperty = function(a,b,c)
+		scbreakpoints_on()
+		a[b] = c
+	end
+	getgenv().gethiddenproperty = function(a,b)
+		scbreakpoints_on()
+		return a[b], true
+	end
 end
 local gtab = {}
 getgenv()._G = gtab

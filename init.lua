@@ -227,14 +227,19 @@ end
 if isfile then
 	getgenv().loadfile = function(path)
 		if isfile(path) == true then
-			return loadstring(readfile(path))
+			local ret = nil
+			local succ,err = pcall(function()
+					ret = loadstring(readfile(path))
+					return ret
+			end)
+			if err then
+				return "compiler error"
+			else
+				return ret
+			end
 		end
 	end
-	getgenv().dofile = function(path)
-		if isfile(path) == true then
-			return loadstring(readfile(path))
-		end
-	end
+	getgenv().dofile = loadfile
 end
 local gtab = {}
 getgenv()._G = gtab

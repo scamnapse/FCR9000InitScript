@@ -232,6 +232,14 @@ if isfile then
 	end
 	getgenv().dofile = loadfile
 end
+if debug.info ~= nil then
+	getgenv.iscclosure = function(func)
+		return debug.info(func, "s") == "[C]"
+	end
+	getgenv().islclosure = function(func)
+		return not iscclosure(func)
+	end
+end
 local gtab = {}
 getgenv()._G = gtab
 getgenv().shared = gtab

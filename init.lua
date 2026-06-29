@@ -232,21 +232,19 @@ if isfile then
 	end
 	getgenv().dofile = loadfile
 end
-if debug.info ~= nil then
-	getgenv().iscclosure = function(func)
-		if debug.info(func, "s") == "[C]" then
-			return true
-		else
-			return false
-		end
-	end
-	getgenv().islclosure = function(func)
-		if getgenv().iscclosure(func) == true then
-			return false
-		else
-			return true
-		end
-	end
+local CRefs = {}
+getgenv().cloneref = function(hey)
+	if not CRefs[hey] then CRefs[hey] = {} end
+	local amir = newproxy(true)
+	getmetatable(amir).__type = "Instance"
+	getmetatable(amir).__index = function(self, k, v) local e = hey[k] if type(e) == "function" then return function(...) return e(hey, ...) end end return e end
+    getmetatable(amir).__newindex = function(self, k, v) hey[k] = v end
+    getmetatable(amir).__call = function(self, k, ...) return hey[k](x, ...) end
+    getmetatable(amir).__tostring = function(self) return hey.Name end
+    getmetatable(amir).__len = function(self) return error('attempt to get length of a userdata value') end
+    getmetatable(amir).__metatable = "The metatable is locked"
+	CRefs[hey] = amir
+	return amir
 end
 local gtab = {}
 getgenv()._G = gtab

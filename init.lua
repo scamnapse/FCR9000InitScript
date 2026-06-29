@@ -227,16 +227,7 @@ end
 if isfile then
 	getgenv().loadfile = function(path)
 		if isfile(path) == true then
-			local ret = nil
-			local succ,err = pcall(function()
-					ret = loadstring(readfile(path))
-					return ret
-			end)
-			if err then
-				return "compiler error"
-			else
-				return ret
-			end
+			return loadstring(readfile(path))
 		end
 	end
 	getgenv().dofile = loadfile

@@ -246,6 +246,11 @@ getgenv().compareinstances = function(ayy,lmao)
 		return false
 	end
 end
+getgenv().Raindrop = {}
+Raindrop.DownloadString = function(string)
+	local body = request({Url = string, Method = "GET"}).Body
+	return body
+end
 local gtab = {}
 getgenv()._G = gtab
 getgenv().shared = gtab

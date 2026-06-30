@@ -214,16 +214,6 @@ end
 getgenv().getrenv = function()
 	return RBX_Env
 end
-if scbreakpoints_on ~= nil then
-	getgenv().sethiddenproperty = function(a,b,c)
-		scbreakpoints_on()
-		a[b] = c
-	end
-	getgenv().gethiddenproperty = function(a,b)
-		scbreakpoints_on()
-		return a[b], true
-	end
-end
 if isfile then
 	getgenv().loadfile = function(path)
 		if isfile(path) == true then

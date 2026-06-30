@@ -1,6 +1,7 @@
---// fully lua cache lib and cloneref, wow
---// free task lib!
---// yes this code is retarded but it works, not very accurate but works i guess
+--// SXRE Init.
+getgenv().is_sxre_compatible = function()
+	return true
+end
 getgenv().task = {}
 function task.defer(func, ...)
     local args = {...}
@@ -235,6 +236,24 @@ getgenv().cloneref = function(hey)
     getmetatable(amir).__metatable = "The metatable is locked"
 	CRefs[hey] = amir
 	return amir
+end
+--// in case its a wrapper and you dont have table.find
+local function rbx_tablefind(a,b)
+	for i,v in pairs(a) do
+		if v == b then
+			return i
+		end
+	end
+	return nil
+end
+getgenv().compareinstances = function(ayy,lmao)
+	if not CRefs[ayy] then
+		return true
+	elseif rbx_tablefind(CRefs[ayy], lmao) then
+		return true
+	else 
+		return false
+	end
 end
 local gtab = {}
 getgenv()._G = gtab

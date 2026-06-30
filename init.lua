@@ -237,21 +237,12 @@ getgenv().cloneref = function(hey)
 	CRefs[hey] = amir
 	return amir
 end
---// in case its a wrapper and you dont have table.find
-local function rbx_tablefind(a,b)
-	for i,v in pairs(a) do
-		if v == b then
-			return i
-		end
-	end
-	return nil
-end
 getgenv().compareinstances = function(ayy,lmao)
 	if not CRefs[ayy] then
+		return ayy == lmao
+	elseif CRefs[ayy] then
 		return true
-	elseif rbx_tablefind(CRefs[ayy], lmao) then
-		return true
-	else 
+	else
 		return false
 	end
 end

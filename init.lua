@@ -251,6 +251,13 @@ Raindrop.DownloadString = function(string)
 	local body = request({Url = string, Method = "GET"}).Body
 	return body
 end
+getgenv().SXRE_Version = request({Url = "https://raw.githubusercontent.com/scamnapse/SXREDLLs/refs/heads/main/version", Method = "GET"}).Body
+getgenv().identifyexecutor = function()
+    return "Synapse X", SXRE_Version
+end
+getgenv().getexecutorname = function()
+    return "Synapse X"
+end
 local gtab = {}
 getgenv()._G = gtab
 getgenv().shared = gtab

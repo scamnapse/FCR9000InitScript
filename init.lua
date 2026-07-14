@@ -3,15 +3,28 @@ getgenv().is_sxre_compatible = function()
 	return true
 end
 getgenv().task = {}
-function task.defer(func, ...)
+task.defer = function(func, ...)
     local args = {...}
     coroutine.wrap(function()
         coroutine.yield()
         func(table.unpack(args))
     end)()
 end
-task.wait = wait
-function task.spawn(func, ...)
+--// more accurate task.wait since its based off Heartbeat, like modern roblox!
+task.wait = function(seconds)
+	local HB = game:GetService("RunService").Heartbeat
+	
+	local elapsed = 0
+	
+	HB:connect(function(fuckyou)
+		elapsed = elapsed + fuckyou
+		
+		if elapsed >= seconds then
+			elapsed = elapsed - seconds
+		end
+	end)
+end
+task.spawn = function(func, ...)
     local co = coroutine.create(func)
     local args = {...}
     coroutine.resume(co, table.unpack(args))

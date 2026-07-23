@@ -271,6 +271,13 @@ end
 getgenv().getexecutorname = function()
     return "Synapse X"
 end
+if GetObjects == nil then
+	getgenv().GetObjects = function(asset)
+		local IS = game:GetService("InsertService")
+		local e = IS:LoadLocalAsset(asset)
+		return {e}
+	end
+end
 local gtab = {}
 getgenv()._G = gtab
 getgenv().shared = gtab
